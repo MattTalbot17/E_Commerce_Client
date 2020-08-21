@@ -1,0 +1,106 @@
+﻿@model IEnumerable<E_Commerce_Client.Models.Sale>
+
+@{
+    ViewData["Title"] = "CustomerSaleHistory";
+    Layout = "~/Views/Shared/CustomerLayout.cshtml";
+}
+
+<h1>Purchase History</h1>
+
+@if (Model.Count() > 0)
+{
+    @foreach (var item in Model)
+    {
+        <br />
+        <div class="row productContainer">
+            <div class="col-md-4">
+                <img src="@item.Product.ProductImage" />
+            </div>
+            <div class="col-md-4">
+                <h2>Product Details</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Name: </p>
+                        <p>Category:</p>
+                        <p>Price (R):</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>@item.Product.ProductName</p>
+                        <p>@item.Product.ProductCategory</p>
+                        <p>R @item.Product.ProductPrice</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h2>Sale Details</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>Date: </p>
+                        <p>Quantity: </p>
+                        <p>Total (R):</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>@item.DateOfSale.ToShortDateString()</p>
+                        <p>@item.Quantity</p>
+                        @{ double total = @item.Quantity * @item.Product.ProductPrice;}
+                        <p>@total</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h3>You have not made a purchase</h3>
+    <a href="/Product/Index" class="btn btn-primary w3-hover-brown">Explore our products</a>
+}
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    .col-md-4 img {
+        width: 100%;
+        height: 200px;
+        padding: 20px 30%;
+    }
+
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover, h2:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label{
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+
+    h3 {
+        font-size: 50px;
+        font-family: 'Courier New';
+        color: sandybrown;
+    }
+
+    p {
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+
+    .productContainer {
+        border-color: saddlebrown;
+        border-style: solid;
+        border-width: medium;
+    }
+</style>
+

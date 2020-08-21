@@ -1,0 +1,104 @@
+﻿@model E_Commerce_Client.Models.LogSingleton
+
+@{
+    int price = 0, quantity, total;
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    @{
+        if (Model.User.Employees != null)
+        {
+            <h4>User details</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    <label>Firstname:</label>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.FirstName)
+                </dd>
+                <dt class="col-sm-2">
+                    <label>Surname: </label>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.User.LastName)
+                </dd>
+            </dl>
+        }
+    }
+    <h4 class="h4">Product details</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            <label>Name :</label>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.ProductName)
+        </dd>
+        <dt class="col-sm-2">
+            <label>Category :</label>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.ProductCategory)
+        </dd>
+        <dt class="col-sm-2">
+            <label>Price (R) :</label>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Product.ProductPrice)
+            @{price = Model.Product.ProductPrice;}
+        </dd>
+        <dt class="col-sm-2">
+            <label>Quantity :</label>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+            @{quantity = Model.Quantity;}
+        </dd>
+    </dl>
+</div>
+<hr />
+<div>
+    <label>Total Price :</label>
+    @{ total = price * quantity;}
+    R @total.ToString()
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<style>
+
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover, h4:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label{
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+
+    h4 {
+        font-size: 40px;
+        color: sandybrown;
+    }
+</style>
+

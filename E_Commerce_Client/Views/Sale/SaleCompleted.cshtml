@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "SaleCompleted";
+    string userType = ViewBag.userType;
+    switch (userType)
+    {
+        case "Customer":
+            Layout = "~/Views/Shared/CustomerLayout.cshtml";
+            break;
+        case "Employee":
+            Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+            break;
+        case null:
+            Layout = "~/Views/Shared/_Layout.cshtml";
+            break;
+    }
+}
+@using (Html.BeginForm())
+        {
+      /*  https://localhost:44363/sale/salecompleted */
+    <a> <h1>Congratulations on your new Purchase</h1></a>
+
+    <input type="button" value="Explore more Items" class="btn btn-primary w3-hover-brown" onclick="window.location.href='/product/index'" />
+}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+        h1:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+
+
+    .btn {
+        margin: 30px auto;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        background-color: white;
+        color: saddlebrown;
+    }
+
+        .btn:hover {
+            background-image: linear-gradient(to right, #cc4400,#993300);
+        }
+</style>

@@ -1,0 +1,113 @@
+﻿@model E_Commerce_Client.Models.Sale
+
+@{
+    ViewData["Title"] = "ConfirmSale";
+    int id = ViewBag.id;
+    List<Product> products = new List<Product>();
+    products.AddRange((@ViewBag.Products as List<Product>).Where(a => a.ProductId == id).ToList());
+    string userType = ViewBag.userType;
+    switch (userType)
+    {
+        case "Customer":
+            Layout = "~/Views/Shared/CustomerLayout.cshtml";
+            break;
+        case "Employee":
+            Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+            break;
+        case null:
+            Layout = "~/Views/Shared/_Layout.cshtml";
+            break;
+    }
+}
+
+<div>
+    @Html.ActionLink("Return to product", "AddToCart", new { id = Model.ProductId })
+</div>
+
+<h1>Purchase review</h1>
+@using (Html.BeginForm())
+{
+    <div>
+        @foreach (var item in products)
+        {
+            <img src="@item.ProductImage" />
+            <div>
+                <label>Name</label>
+                <br />
+                @item.ProductName
+            </div>
+            <div>
+                <label>Description</label>
+                <br />
+                @item.ProductDescription
+            </div>
+            <div>
+                <label>Price</label>
+                <br />
+                @item.ProductPrice
+            </div>
+            <div>
+                <label>Category</label>
+                <br />
+                @item.ProductCategory
+            </div>
+        }
+        <div>
+            <label>Quantity</label>
+            <br />
+            @Model.Quantity
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Confirm Purchase" class="btn btn-primary w3-hover-brown" id="confirm" />
+    </div>
+}
+
+
+
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label{
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+        .btn {
+        margin: 30px auto;
+        text-decoration: none;
+        display:inline-block;
+        background-color: white;
+        color: saddlebrown;
+        border-color:saddlebrown;
+    }
+                .btn:hover {
+            background-image: linear-gradient(to right, #cc4400,#993300);
+        }
+
+    img {
+        width: 150px;
+        height: 150px;
+        margin: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+</style>

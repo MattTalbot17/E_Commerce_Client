@@ -1,0 +1,120 @@
+﻿@model E_Commerce_Client.Models.Sale
+
+@{
+    int id = ViewBag.id;
+    List<Product> products = new List<Product>();
+    products.AddRange((@ViewBag.Products as List<Product>).Where(a => a.ProductId == id).ToList());
+    string userType = ViewBag.userType;
+    switch (userType)
+    {
+        case "Customer":
+            Layout = "~/Views/Shared/CustomerLayout.cshtml";
+            break;
+        case "Employee":
+            Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+            break;
+        case null:
+            Layout = "~/Views/Shared/_Layout.cshtml";
+            break;
+    }
+}
+<h1>Add Product To Cart</h1>
+@using (Html.BeginForm())
+{
+    <hr />
+    @foreach (var item in products)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@item.ProductImage" />
+            </div>
+            <div class="col-md-4">
+                <form asp-action="AddToCart">
+                    <div>
+                        <label>Name</label>
+                        <p>@item.ProductName</p>
+                    </div>
+                    <div>
+                        <label>Description</label>
+                        <br />
+                        <p>@item.ProductDescription</p>
+                    </div>
+                    <div>
+                        <label>Price</label>
+                        <p>@item.ProductPrice</p>
+                    </div>
+                    <div>
+                        <label>Category</label>
+                        <p>@item.ProductCategory</p>
+                    </div>
+                
+                    <div class="form-group">
+                        <label asp-for="Quantity"></label>
+                        <p><span style="color:red; font-size:12px">@ViewBag.Error</span></p>
+                        <input asp-for="Quantity" class="form-control" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Review Purchase" class="btn btn-primary w3-hover-brown" id="confirm" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        }
+    }
+    <div>
+        <a asp-controller="Product" asp-action="Index">Back to List</a>
+    </div>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label{
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+        .btn {
+        margin: 30px auto;
+        text-decoration: none;
+        display:inline-block;
+        background-color: white;
+        color: saddlebrown;
+        border-color:saddlebrown;
+    }
+                .btn:hover {
+            background-image: linear-gradient(to right, #cc4400,#993300);
+        }
+
+        img {
+            width: 350px;
+            height: 500px;
+        }
+
+        input {
+            width: 200px;
+        }
+        p{
+            margin-bottom:0px!important;
+        }
+        row{
+            margin-bottom:10px;
+        }
+    </style>
+

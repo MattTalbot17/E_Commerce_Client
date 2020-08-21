@@ -1,0 +1,70 @@
+﻿@model E_Commerce_Client.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="h1">Details</h1>
+<div class="row">
+    <div class="col-md-4">
+        <img src="@Model.ProductImage" />
+    </div>
+    <div class="col-md-4">
+        <form asp-action="Details">
+            <br />
+            <div>
+                <label>Name</label>
+                <br />
+                @Model.ProductName
+            </div>
+            <div>
+                <label>Description</label>
+                <br />
+                @Model.ProductDescription
+            </div>
+            <div>
+                <label>Price</label>
+                <br />
+                @Model.ProductPrice
+            </div>
+            <div>
+                <label>Category</label>
+                <br />
+                @Model.ProductCategory
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<style>
+
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label{
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+
+    img {
+        width:300px;
+        height:400px;
+    }
+</style>

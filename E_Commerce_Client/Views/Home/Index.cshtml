@@ -1,0 +1,105 @@
+﻿@{ 
+        string userType = ViewBag.userType;
+    switch (userType)
+    {
+        case "Customer":
+            Layout = "~/Views/Shared/CustomerLayout.cshtml";
+            break;
+        case "Employee":
+            Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+            break;
+        case null:
+            Layout = "~/Views/Shared/_Layout.cshtml";
+            break;
+    }
+}
+
+<div class="text-center">
+    <header class="display-4">Welcome To <br /> ACME INC</header>
+</div>
+<div class="jumbotron" >
+    <h1>Products</h1>
+    <p>Here at ACME we offer a wide range of Sporting products. Whether you are looking for the latest Equipment, the lightest and most durable clothing or just the added look of a professional in terms of accessories, you have found your dream store.</p>
+    <p><a action="Index" class="btn btn-primary w3-hover-brown" id="viewProducts" onclick="location.href='@Url.Action("Index", "Product")'">View Products&raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>About Us</h2>
+        <p>
+            ACME is a well known Store for their consistent quality and customer support at physical locations. <br />
+            ACME has been around Durban since 2010 when the FIFA Soccer World Cup was hosted by South Africa, we noticed a gap in the market for all sporting equipment. <br />
+            We are proud to announce the latest release of this online e-commerce store to enable us to reach all South African Provinces.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Physical locations</h2>
+        <h6>Gateway Theatre Of Shopping</h6>
+        <p>1 Palm Blvd, Umhlanga Ridge, Umhlanga, 4021</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Contact Us</h2>
+        <h6>Gateway Theatre Of Shopping</h6>
+        <p>Phone: 0605268362</p>
+        <p>Email: gatewaysales@acmeinc.co.za</p>
+        <h6>Online</h6>
+        <p>Phone: 0315641121</p>
+        <p>Email: onlinesales@acmeinc.co.za</p>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+
+    header.display-4{
+        font-size: 110px;
+        font-family: 'Courier New';
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+    }
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover, h2:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+
+
+    .btn {
+        margin: 30px auto;
+        text-decoration: none;
+        display:inline-block;
+        background-color: white;
+        color: saddlebrown;
+        border-color:saddlebrown;
+    }
+
+        .btn:hover {
+            background-image: linear-gradient(to right, #cc4400,#993300);
+        }
+
+
+    h2{
+        font-size: 40px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+
+
+    h6{
+        font-size:20px;
+        color:sandybrown;
+    }
+</style>

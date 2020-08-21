@@ -1,0 +1,93 @@
+﻿@model E_Commerce_Client.Models.Product
+
+@{
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    List<string> categoriesList = new List<string>();
+    categoriesList.AddRange((@ViewBag.data as List<Product>).Select(a => a.ProductCategory).Distinct().ToList());
+}
+
+<h1>Create a new Product</h1>
+<span style="color:red;">@ViewBag.Error</span>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="CreateProduct">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label>Name:</label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Price (R):</label>
+                <input asp-for="ProductPrice" class="form-control" />
+                <span asp-validation-for="ProductPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Description: </label>
+                <input asp-for="ProductDescription" class="form-control" />
+                <span asp-validation-for="ProductDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Upload Image: </label>
+                <input placeholder="- JPG only" asp-for="ProductImage" class="form-control" />
+                <span asp-validation-for="ProductImage" class="text-danger"></span>
+                <span style="color:red;">@ViewBag.imageError</span>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label>Select Category</label>
+                    <h2>@Html.DropDownList("category", new SelectList(categoriesList), htmlAttributes: new { @class = "form-control" })</h2>
+                </div>
+                <div class="col-md-1">
+                    <label> OR </label>
+                </div>
+                <div class="col-md-5">
+                    <label> Add Category: </label>
+                    <input type="text" id="newCatgory" name="newCategory" />
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Product" id="addButton" class="btn btn-primary w3-hover-brown" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label{
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+        .btn {
+        margin: 30px auto;
+        text-decoration: none;
+        display:inline-block;
+        background-color: white;
+        color: saddlebrown;
+        border-color:saddlebrown;
+    }
+                .btn:hover {
+            background-image: linear-gradient(to right, #cc4400,#993300);
+        }
+
+</style>

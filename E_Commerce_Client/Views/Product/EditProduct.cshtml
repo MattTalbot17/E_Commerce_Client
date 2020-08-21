@@ -1,0 +1,95 @@
+﻿@model E_Commerce_Client.Models.Product
+
+@{
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+    List<string> categoriesList = new List<string>();
+    categoriesList.AddRange((@ViewBag.data as List<Product>).Select(a => a.ProductCategory).Distinct().ToList());
+}
+
+<h1>Edit @Model.ProductName</h1>
+
+<hr />
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="EditProduct">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Price (R):</label>
+                    <input asp-for="ProductPrice" class="form-control" />
+                    <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Description: </label>
+                    <input asp-for="ProductDescription" class="form-control" />
+                    <span asp-validation-for="ProductDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Upload Image: </label>
+                    <input asp-for="ProductImage" class="form-control" />
+                    <span asp-validation-for="ProductImage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <labe>Category </labe>
+                    <h2 class="dropList">@Html.DropDownList("category", new SelectList(categoriesList), htmlAttributes: new { @class = "form-control" })</h2>
+                    <div class="form-group">
+                        <input type="submit" value="Save Changes" class="btn btn-primary w3-hover-brown" name="submit"/>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <input type="submit" value="Remove Product" class="btn btn-primary w3-hover-brown" name="submit"/>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+<hr />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label{
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+        .btn {
+        margin: 30px auto;
+        text-decoration: none;
+        display:inline-block;
+        background-color: white;
+        color: saddlebrown;
+        border-color:saddlebrown;
+    }
+                .btn:hover {
+            background-image: linear-gradient(to right, #cc4400,#993300);
+        }
+</style>

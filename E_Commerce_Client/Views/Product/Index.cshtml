@@ -1,0 +1,268 @@
+﻿@model IEnumerable<E_Commerce_Client.Models.Product>
+
+@{
+    string category = ViewBag.category;
+    string userType = ViewBag.userType;
+    bool searchedProduct = ViewBag.searchedProduct;
+    switch (userType)
+    {
+        case "Customer":
+            Layout = "~/Views/Shared/CustomerLayout.cshtml";
+            break;
+        case "Employee":
+            Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+            break;
+        case null:
+            Layout = "~/Views/Shared/_Layout.cshtml";
+            break;
+    }
+    List<string> categoriesList = new List<string>();
+    categoriesList.AddRange((@ViewBag.data as List<Product>).Select(a => a.ProductCategory).Distinct().ToList());
+}
+
+<body class="body">
+    @using (Html.BeginForm("Index", "Product", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-10" style="margin:0pc!important; padding:0px!important">
+                        <input name="singleProduct" class="form-control" placeholder="Search our products..." style="width:inherit" />
+                    </div>
+                    <div class="col-md-2" style="margin:0pc!important ; padding:0px!important">
+                        <input class="btn btn-primary w3-hover-brown" type="submit" name="submit" id="searchSingleproduct" value="?" style="float:left; height:35px; margin:0px!important" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h1 style="float:left!important">Products</h1>
+            </div>
+        </div>
+        <br />
+
+        <div class="container">
+            <div class="form-group">
+                <label class="control-label">Filter by Category:</label>
+                <h2>@Html.DropDownList("category", new SelectList(categoriesList), htmlAttributes: new { @class = "form-control" })</h2>
+            </div>
+            <div class="container">
+                <input type="submit" value="Search" class="btn btn-primary w3-hover-brown" name="submit" id="searchButton" />
+                <input type="submit" value="View All" class="btn btn-primary w3-hover-brown" name="submit" id="viewAllButton" />
+            </div>
+        </div>
+    }
+    @if (searchedProduct)
+    {
+        <p>Displaying search items for: " @ViewBag.searchedProductName " </p>
+        <div id="p-grid">
+            @foreach (var item in Model)
+            {
+
+                <div class="p-grid">
+                    <div class="p-grid-in">
+                        <img src="@item.ProductImage" />
+                        <div class="p-name">@item.ProductName</div>
+                        <div class="p-price">R @item.ProductPrice</div>
+                        <div class="p-desc">@item.ProductDescription</div>
+                        <div>@Html.ActionLink("View " + item.ProductName, "Details", new { id = item.ProductId })</div>
+                        <div class="ui">
+                            <p class="div-EditProduct">
+                                @{
+                                    if (userType == "Employee")
+                                    {
+                                        @Html.ActionLink("Edit Product", "EditProduct", "Product", new { id = item.ProductId })
+                                    }
+                                }
+                            </p>
+                            <p class="div-addToCart">@Html.ActionLink("Add to cart", "AddToCart", "Sale", new { id = item.ProductId })</p>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    }
+    else
+    {
+        @foreach (var items in categoriesList)
+        {
+            if (items == category)
+            {
+                <br />
+                <h4>@items.ToString()</h4>
+                <div id="p-grid">
+                    @foreach (var item in Model.Where(a => a.ProductCategory == items.ToString()))
+                    {
+                        <div class="p-grid">
+                            <div class="p-grid-in">
+                                <img src="@item.ProductImage" />
+                                <div class="p-name">@item.ProductName</div>
+                                <div class="p-price">R @item.ProductPrice</div>
+                                <div class="p-desc">@item.ProductDescription</div>
+                                <div>@Html.ActionLink("View " + item.ProductName, "Details", new { id = item.ProductId })</div>
+                                <br />
+                                <div class="ui">
+                                    <p class="div-EditProduct">
+                                        @{
+                                            if (userType == "Employee")
+                                            {
+                                                @Html.ActionLink("Edit Product", "EditProduct", "Product", new { id = item.ProductId })
+                                            }
+                                        }
+                                    </p>
+                                    <p class="div-addToCart">@Html.ActionLink("Add to cart", "AddToCart", "Sale", new { id = item.ProductId })</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else if (category == null)
+            {
+                <br />
+                <h4>@items.ToString()</h4>
+                <div id="p-grid">
+                    @foreach (var item in Model.Where(a => a.ProductCategory == items.ToString()))
+                    {
+                        <div class="p-grid">
+                            <div class="p-grid-in">
+                                <img src="@item.ProductImage" />
+                                <div class="p-name">@item.ProductName</div>
+                                <div class="p-price">R @item.ProductPrice</div>
+                                <div class="p-desc">@item.ProductDescription</div>
+                                <div>@Html.ActionLink("View " + item.ProductName, "Details", new { id = item.ProductId })</div>
+                                <div class="ui">
+                                    <p class="div-EditProduct">
+                                        @{
+                                            if (userType == "Employee")
+                                            {
+                                                @Html.ActionLink("Edit Product", "EditProduct", "Product", new { id = item.ProductId })
+                                            }
+                                        }
+                                    </p>
+                                    <p class="div-addToCart">@Html.ActionLink("Add to cart", "AddToCart", "Sale", new { id = item.ProductId })</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            }
+        }
+    }
+</body>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+    #p-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        /* Width of columns */
+        grid-template-columns: 20% 20% 20% 20% 20%;
+        border: groove;
+        border-color: wheat;
+    }
+    /* Product items */
+    div.p-grid-in {
+        box-sizing: border-box;
+        margin: 5px;
+        padding-left: 20%;
+        padding-right: 20%;
+        padding-bottom: 5%;
+        padding-top: 5%;
+        border: 1px solid #e8f0ff;
+        background: #f2f7ff;
+        height: 400px;
+        position: relative;
+    }
+
+    img {
+        width: 100%;
+        height: 150px;
+        margin: auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    div.p-name {
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    div.p-price {
+        color: #f44242;
+    }
+
+    div.p-desc {
+        color: #888;
+        font-size: 0.9em;
+    }
+
+
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size: 80px;
+    }
+
+        h1:hover, h4:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label {
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+
+    .btn {
+        margin: 30px auto;
+        text-decoration: none;
+        display: inline-block;
+        background-color: white;
+        color: saddlebrown;
+        border-color: saddlebrown;
+    }
+
+        .btn:hover {
+            background-image: linear-gradient(to right, #cc4400,#993300);
+        }
+
+
+    div.container {
+        text-align: center;
+    }
+
+    h2 {
+        width: max-content;
+        margin: auto;
+    }
+
+
+    h4 {
+        font-size: 40px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+
+    p.div-addToCart {
+        color: green;
+    }
+
+    p.div-EditProduct {
+        color: red;
+    }
+
+    .ui {
+        padding-left: 10%;
+        position: absolute;
+        bottom: 0;
+    }
+</style>

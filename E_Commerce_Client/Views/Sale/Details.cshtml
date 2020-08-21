@@ -1,0 +1,116 @@
+﻿@model E_Commerce_Client.Models.Sale
+
+@{
+    int price = 0, quantity, total;
+    List<Product> products = new List<Product>();
+    products.AddRange((@ViewBag.Products as List<Product>).Where(a => a.ProductId == Model.ProductId).ToList());
+}
+
+<h1>Sale Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Sale ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SaleId)
+        </dd>
+        <dt class="col-sm-2">
+            User ID
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt class="col-sm-2">
+            Date of Sale
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateOfSale)
+        </dd>
+    </dl>
+    <h4>Pruduct Details</h4>
+    <dl class="row">
+        @foreach (var item in products)
+        {
+            <dt class="col-sm-2">
+                Name
+            </dt>
+            <dd class="col-sm-10">
+                @item.ProductName
+            </dd>
+            <dt class="col-sm-2">
+                Description
+            </dt>
+            <dd class="col-sm-10">
+                @item.ProductDescription
+            </dd>
+            <dt class="col-sm-2">
+                Price
+            </dt>
+            <dd class="col-sm-10">
+                R @item.ProductPrice
+                @{price = item.ProductPrice;}
+            </dd>
+            <dt class="col-sm-2">
+                Category
+            </dt>
+            <dd class="col-sm-10">
+                @item.ProductCategory
+            </dd>
+
+        }
+        <dt class="col-sm-2">
+            Quantity
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+            @{quantity = Model.Quantity;}
+        </dd>
+
+        <dt class="col-sm-2">
+            Total Cost:
+        </dt>
+        <dd class="col-sm-10">
+           @{ total = price * quantity;}
+            R @total.ToString()
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<style>
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover, h2:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label{
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+
+    h4 {
+        font-size: 40px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+
+    dt{
+        color: sandybrown;
+    }
+</style>

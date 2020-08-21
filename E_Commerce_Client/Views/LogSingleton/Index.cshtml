@@ -1,0 +1,229 @@
+﻿@model IEnumerable<E_Commerce_Client.Models.LogSingleton>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/EmployeeLayout.cshtml";
+
+    bool viewAll = ViewBag.viewAll;
+
+    List<string> productCategoryList = new List<string>();
+    List<string> categoriesList = new List<string>();
+    List<int> totalSalesList = new List<int>();
+    categoriesList.AddRange((@ViewBag.data as List<Product>).Select(a => a.ProductCategory).Distinct().ToList());
+
+    if (viewAll == true)
+    {
+        productCategoryList.AddRange((@ViewBag.recordsList as List<Records>).Select(a => a.Category).Distinct().ToList());
+        totalSalesList.AddRange((@ViewBag.recordsList as List<Records>).Select(a => a.TotalNumber).ToList());
+
+    }
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(productCategoryList);
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(totalSalesList);
+
+}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.datepicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            format: 'dd/mm/yyyy'
+        });
+    });
+</script>
+
+@if (viewAll == true)
+{
+
+    <h1 class="h1">Total Sales</h1>
+    <br />
+    <div class="box-body">
+        <div class="chart-container">
+            <canvas id="chart" style="width:100%; height:500px"></canvas>
+        </div>
+    </div>
+    <br />
+    <hr />
+}
+<h1>Search Log History</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Index", "LogSingleton", FormMethod.Post))
+        {
+            <div class="form-group">
+                <label>Category</label>
+                <h2>@Html.DropDownList("category", new SelectList(categoriesList), htmlAttributes: new { @class = "form-control" })</h2>
+            </div>
+            <div class="form-group">
+                <label>Start Date</label>
+                @Html.TextBox("start", "", new { @class = "form-control datepicker", @readonly = "readonly" })
+            </div>
+            <div class="form-group">
+                <label>End Date</label>
+                @Html.TextBox("end", "", new { @class = "form-control datepicker", @readonly = "readonly" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary w3-hover-brown" name="submit" id="searchButton" />
+                <input type="submit" value="View All" class="btn btn-primary w3-hover-brown" name="submit" id="viewAllButton" />
+            </div>
+        }
+    </div>
+</div>
+<hr>
+<h1>Log Record</h1>
+<br />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                <label>Product ID</label>
+            </th>
+            <th>
+                <label>Category</label>
+            </th>
+            <th>
+                <label>Quantity</label>
+            </th>
+            <th>
+                <label>Date</label>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LogDate)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.LogId })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    h1 {
+        background-image: linear-gradient(to right, #cc4400,#4d1a00);
+        -webkit-background-clip: text;
+        color: transparent;
+        transition: all 1.5s;
+        margin: 0 auto;
+        font-size:80px;
+    }
+
+        h1:hover {
+            text-decoration: none;
+            transform: skewY(3deg) skewX(1deg);
+            text-shadow: 20px 12px 20px #331100;
+        }
+
+    label{
+        font-size: 20px;
+        font-family: 'Courier New';
+        color: saddlebrown;
+    }
+        .btn {
+        margin: 30px auto;
+        text-decoration: none;
+        display:inline-block;
+        background-color: white;
+        color: saddlebrown;
+        border-color:saddlebrown;
+    }
+                .btn:hover {
+            background-image: linear-gradient(to right, #cc4400,#993300);
+        }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script type="text/javascript">
+        $(function () {
+    var chartName = "chart";
+        var ctx = document.getElementById(chartName).getContext('2d');
+        var data = {
+                labels: @Html.Raw(XLabels),
+                datasets: [{
+                    label: "Bar graph showing sales comparison per category",
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(255, 0, 0)',
+                        'rgba(0, 255, 0)',
+                        'rgba(0, 0, 255)',
+                        'rgba(192, 192, 192)',
+                        'rgba(255, 255, 0)',
+                        'rgba(255, 0, 255)'
+                    ],
+                    borderWidth: 1,
+                    data: @Html.Raw(YValues)
+    }]
+            };
+
+var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,164,0.2)"
+                        }
+}],
+                    xAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
+            };
+
+       var myChart = new  Chart(ctx, {
+                options: options,
+                data: data,
+                type:'bar'
+
+            });
+        });
+</script>  
